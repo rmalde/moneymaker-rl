@@ -1,8 +1,6 @@
-# Standard Library
 import math
 from typing import Optional
 
-# Third Party
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -34,8 +32,8 @@ def attention(
 class PositionwiseFeedForward(nn.Module):
     def __init__(self, d_model: int, d_ff: int):
         super().__init__()
-        self.w1 = nn.Linear(d_model, d_ff, bias=False)
-        self.w2 = nn.Linear(d_ff, d_model, bias=False)
+        self.w1: nn.Linear = nn.Linear(d_model, d_ff, bias=False)
+        self.w2: nn.Linear = nn.Linear(d_ff, d_model, bias=False)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.w2(F.gelu(self.w1(x)))
@@ -57,7 +55,7 @@ class MultiheadSelfAttention(nn.Module):
 
         self._apply_xavier_initialization()
 
-    def _apply_xavier_initialization(self):
+    def _apply_xavier_initialization(self) -> None:
         for module in self.modules():
             if isinstance(module, nn.Linear):
                 init.xavier_uniform_(module.weight)
@@ -132,12 +130,12 @@ class TransformerBlock(nn.Module):
 
 
 class AttentionPooling(nn.Module):
-    def __init__(self, d_model):
+    def __init__(self, d_model: int):
         super().__init__()
         self.d_model = d_model
         self.attention_layer = nn.Linear(d_model, 1)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         # x: (n, sequence_length, d_model)
         attention_weights = torch.softmax(
             self.attention_layer(x), dim=1

@@ -1,8 +1,6 @@
-# Third Party
 import torch
 import torch.nn as nn
 
-# First Party
 from moneymaker_rl.models import FCN, TransformerCLS
 from moneymaker_rl.trainer import Trainer
 from moneymaker_rl.trainer.data import get_obsact_dataloaders

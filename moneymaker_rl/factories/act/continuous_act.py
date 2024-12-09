@@ -1,4 +1,3 @@
-# Third Party
 import numpy as np
 
 

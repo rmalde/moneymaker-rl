@@ -28,11 +28,7 @@ def make_dirs(dataset_dir: str) -> Tuple[str, str, str, str]:
 
 
 def process_replay(
-    replay_id: str,
-    replay_idx: int,
-    replay_dir: str,
-    actions_dir: str,
-    obs_dir: str
+    replay_id: str, replay_idx: int, replay_dir: str, actions_dir: str, obs_dir: str
 ) -> Optional[str]:
     replay_path = os.path.join(replay_dir, f"{replay_id}.replay")
     try:

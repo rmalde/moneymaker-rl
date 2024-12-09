@@ -3,7 +3,7 @@
 
 import os
 import warnings
-from typing import Iterator, List, Optional, Any
+from typing import Any, Iterator, List, Optional
 
 import ballchasing
 from ballchasing.constants import Playlist, Rank, Season
@@ -17,11 +17,13 @@ warnings.filterwarnings("ignore", category=TqdmExperimentalWarning)
 
 load_dotenv()
 
+
 def get_api() -> ballchasing.Api:
     api_key = os.getenv("BALLCHASING_API_KEY")
     if api_key is None:
         raise ValueError("BALLCHASING_API_KEY environment variable is not set")
     return ballchasing.Api(api_key)
+
 
 # Initialize API at module level
 api = get_api()
@@ -36,7 +38,7 @@ def get_replay_dicts(
         min_rank = Rank.SUPERSONIC_LEGEND
     if max_rank is None:
         max_rank = Rank.SUPERSONIC_LEGEND
-        
+
     return api.get_replays(
         # player_name="retals",
         playlist=Playlist.RANKED_DUELS,

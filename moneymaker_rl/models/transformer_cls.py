@@ -1,11 +1,8 @@
-# Standard Library
 from typing import Literal
 
-# Third Party
 import torch
 import torch.nn as nn
 
-# First Party
 from moneymaker_rl.models import PhysicsProjection, TransformerBlock
 
 

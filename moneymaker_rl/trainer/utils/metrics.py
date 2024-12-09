@@ -1,7 +1,5 @@
-# Standard Library
 from abc import ABC, abstractmethod
 
-# Third Party
 import torch
 
 
@@ -17,7 +15,9 @@ class Metrics(ABC):
         self.test_loss: float = 0
 
     @abstractmethod
-    def update_train(self, loss: float, outputs: torch.Tensor, target: torch.Tensor) -> None:
+    def update_train(
+        self, loss: float, outputs: torch.Tensor, target: torch.Tensor
+    ) -> None:
         """Update metrics based on the current batch."""
 
     @abstractmethod
@@ -51,14 +51,18 @@ class ClassificationMetrics(Metrics):
         # self.correct_switch_test = 0
         # self.total_switch_test = 0
 
-    def update_train(self, loss: float, outputs: torch.Tensor, target: torch.Tensor) -> None:
+    def update_train(
+        self, loss: float, outputs: torch.Tensor, target: torch.Tensor
+    ) -> None:
         self.total_train += target.size(0)
         self.train_loss += loss
         # top 1
         _, predicted_top1 = torch.max(outputs.data, 1)
         self.correct_top1_train += int((predicted_top1 == target).sum().item())
 
-    def update_test(self, loss: float, outputs: torch.Tensor, target: torch.Tensor) -> None:
+    def update_test(
+        self, loss: float, outputs: torch.Tensor, target: torch.Tensor
+    ) -> None:
 
         self.total_test += target.size(0)
         self.test_loss += loss
@@ -67,7 +71,9 @@ class ClassificationMetrics(Metrics):
         self.correct_top1_test += int((predicted_top1 == target).sum().item())
         # top 5
         _, predicted_top5 = torch.topk(outputs.data, 5, dim=1)
-        self.correct_top5_test += int((predicted_top5 == target.unsqueeze(1)).sum().item())
+        self.correct_top5_test += int(
+            (predicted_top5 == target.unsqueeze(1)).sum().item()
+        )
         # switch
         # last_actions = actions[:, -1].squeeze()  # (batch_size, )
         # self.total_switch_test += (last_actions != target).sum().item()
@@ -117,15 +123,19 @@ class RegressionMetrics(Metrics):
         self.mae_train = 0
         self.mae_test = 0
 
-    def update_train(self, loss: float, outputs: torch.Tensor, target: torch.Tensor) -> None:
+    def update_train(
+        self, loss: float, outputs: torch.Tensor, target: torch.Tensor
+    ) -> None:
         self.total_train += target.size(0)
         self.train_loss += loss
-        self.mae_train += torch.abs(target - outputs).sum().item()
+        self.mae_train += int(torch.abs(target - outputs).sum().item())
 
-    def update_test(self, loss: float, outputs: torch.Tensor, target: torch.Tensor) -> None:
+    def update_test(
+        self, loss: float, outputs: torch.Tensor, target: torch.Tensor
+    ) -> None:
         self.total_test += target.size(0)
         self.test_loss += loss
-        self.mae_test += int(torch.abs(target - outputs).sum().item()) 
+        self.mae_test += int(torch.abs(target - outputs).sum().item())
 
     def to_dict(self) -> dict:
         return {

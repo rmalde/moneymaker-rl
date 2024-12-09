@@ -2,7 +2,9 @@ import torch
 import torch.nn.functional as F
 
 
-def custom_loss(outputs, target: torch.Tensor, last_actions: torch.Tensor) -> torch.Tensor:
+def custom_loss(
+    outputs: torch.Tensor, target: torch.Tensor, last_actions: torch.Tensor
+) -> torch.Tensor:
     # outputs: (batch_size, num_actions)
     # target: (batch_size)
     # last_actions: (batch_size, 1)

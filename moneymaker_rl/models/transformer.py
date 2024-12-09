@@ -1,11 +1,8 @@
-# Standard Library
 from typing import Literal
 
-# Third Party
 import torch
 import torch.nn as nn
 
-# First Party
 from moneymaker_rl.models import AttentionPooling, TransformerBlock
 
 
@@ -41,7 +38,7 @@ class Transformer(nn.Module):
         output_size = action_size if objective == "classification" else 1
         self.lm_head = nn.Linear(self.d_model, output_size, bias=False)
 
-    def _load_config(self, config: dict):
+    def _load_config(self, config: dict) -> None:
         self.d_model = config.get("d_model", 128)
         self.num_heads = config.get("num_heads", 4)
         self.d_ff = config.get("d_ff", 512)

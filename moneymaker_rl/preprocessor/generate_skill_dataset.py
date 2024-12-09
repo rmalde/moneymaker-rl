@@ -16,8 +16,8 @@ from moneymaker_rl.preprocessor.data import (
 )
 
 
-def make_dirs(dataset_dir: str) -> None:
-    def _make_if_not_exists(dir_path) -> str:
+def make_dirs(dataset_dir: str) -> Tuple[str, str, str, str]:
+    def _make_if_not_exists(dir_path: str) -> str:
         if not os.path.exists(dir_path):
             os.makedirs(dir_path)
         return dir_path
@@ -60,11 +60,7 @@ def get_ranks() -> list[tuple[Rank, Rank]]:
 
 
 def process_replay(
-    replay_path: str,
-    idx: int,
-    actions_dir: str,
-    obs_dir: str,
-    rank: Rank
+    replay_path: str, idx: int, actions_dir: str, obs_dir: str, rank: Rank
 ) -> Optional[Tuple[List[str], Rank]]:
     try:
         frames = replay_to_rlgym_frames(replay_path)

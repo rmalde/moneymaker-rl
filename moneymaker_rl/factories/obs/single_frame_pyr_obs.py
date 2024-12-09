@@ -3,11 +3,9 @@
 # But modeified for building dataset from replays, not to be used in the environment
 # since it doesn't inherit ObsBuilder
 
-# Standard Library
 import math
 from typing import List
 
-# Third Party
 import numpy as np
 from rlgym.api import AgentID
 from rlgym.rocket_league import common_values

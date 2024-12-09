@@ -1,4 +1,3 @@
-# Third Party
 import matplotlib.pyplot as plt
 import seaborn as sns
 import torch
@@ -8,7 +7,6 @@ from torch.nn.utils import clip_grad_norm_
 from torch.optim.lr_scheduler import CosineAnnealingLR
 from tqdm.rich import tqdm
 
-# First Party
 from moneymaker_rl.trainer.utils import (
     CheckpointManager,
     ClassificationMetrics,
@@ -26,7 +24,7 @@ class Trainer:
         config: dict = None,
         device="cpu",
         objective="classification",
-    ):
+    ) -> None:
         if config is not None:
             self._load_config(config)
 
@@ -56,7 +54,7 @@ class Trainer:
         else:
             raise ValueError(f"Invalid objective: {objective}")
 
-    def _load_config(self, config: dict):
+    def _load_config(self, config: dict) -> None:
         self.learning_rate = config.get("learning_rate", 5e-3)
         self.num_epochs = config.get("num_epochs", 10)
         self.wandb_project = config.get("wandb_project", "rl-replay-trainer")
@@ -64,7 +62,7 @@ class Trainer:
         self.max_grad_norm = config.get("max_grad_norm", 1.0)
         self.scheduler_max_t = config.get("scheduler_max_t", 100000)
 
-    def train(self):
+    def train(self) -> None:
 
         for epoch in range(self.num_epochs):
             self.model.train()
@@ -122,7 +120,7 @@ class Trainer:
             )
             self.metrics.reset()
 
-    def _save_plot(self, all_outputs, all_targets, filename):
+    def _save_plot(self, all_outputs, all_targets, filename) -> None:
         all_outputs = torch.cat(all_outputs).detach().cpu().numpy()
         all_targets = torch.cat(all_targets).detach().cpu().numpy()
         # save scatterplot to scatterplot.png
@@ -138,7 +136,7 @@ class Trainer:
 
         print("Saved scatterplot to ", filename)
 
-    def evaluate(self):
+    def evaluate(self) -> None:
         self.model.eval()
 
         with torch.no_grad():

@@ -1,7 +1,5 @@
-# Standard Library
 from typing import List, Tuple
 
-# Third Party
 import numpy as np
 from replay_to_action_obs.factories import InverseLookupAct, SingleFramePyrObs
 from rlgym_tools.replays.convert import ReplayFrame, get_valid_action_options
@@ -52,10 +50,8 @@ def rlgym_frames_to_action_obs(
 
 
 if __name__ == "__main__":
-    # Standard Library
     import os
 
-    # Third Party
     from replay_to_action_obs.data import download_replays, replay_to_rlgym_frames
 
     # download a replay file

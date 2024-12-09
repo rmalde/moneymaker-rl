@@ -1,4 +1,5 @@
-# Third Party
+from typing import Dict, List, Optional, Tuple
+
 import numpy as np
 
 
@@ -6,35 +7,44 @@ ACTION_SPACE = 90
 
 
 class InverseLookupAct:
-    def __init__(self, bins: list=None) -> None:
+    def __init__(self, bins: Optional[List[Tuple[float, ...]]] = None) -> None:
         self.ACTION_LEN = 1  # public variable
 
         if bins is None:
-            self.bins = [(-1, 0, 1)] * 5
-        elif isinstance(bins[0], (float, int)):
-            self.bins = [bins] * 5
+            self.bins: List[Tuple[float, ...]] = [(-1.0, 0.0, 1.0)] * 5
         else:
             assert len(bins) == 5, "Need bins for throttle, steer, pitch, yaw and roll"
-            self.bins = bins
-        self._lookup_table = self.make_lookup_table(self.bins)
-        # print(self._lookup_table)
-        # quit()
-        self._inverse_lookup_table = {
+            # Ensure all elements are float tuples
+            self.bins = [tuple(float(x) for x in bin_tuple) for bin_tuple in bins]
+
+        self._lookup_table: np.ndarray = self.make_lookup_table(self.bins)
+        self._inverse_lookup_table: Dict[Tuple[float, ...], int] = {
             tuple(action): i for i, action in enumerate(self._lookup_table)
         }
+        # print(self._lookup_table)
+        # quit()
 
     @staticmethod
-    def make_lookup_table(bins: list) -> list:
+    def make_lookup_table(bins: List[Tuple[float, ...]]) -> np.ndarray:
         actions = []
         # Ground
         for throttle in bins[0]:
             for steer in bins[1]:
-                for boost in (0, 1):
-                    for handbrake in (0, 1):
-                        if boost == 1 and throttle != 1:
+                for boost in (0.0, 1.0):
+                    for handbrake in (0.0, 1.0):
+                        if boost == 1.0 and throttle != 1.0:
                             continue
                         actions.append(
-                            [throttle or boost, steer, 0, steer, 0, 0, boost, handbrake]
+                            [
+                                float(throttle or boost),
+                                float(steer),
+                                0.0,
+                                float(steer),
+                                0.0,
+                                0.0,
+                                float(boost),
+                                float(handbrake),
+                            ]
                         )
         # [ 1 -1  0  0  0  0  1  0]
 
@@ -42,18 +52,29 @@ class InverseLookupAct:
         for pitch in bins[2]:
             for yaw in bins[3]:
                 for roll in bins[4]:
-                    for jump in (0, 1):
-                        for boost in (0, 1):
-                            if jump == 1 and yaw != 0:  # Only need roll for sideflip
+                    for jump in (0.0, 1.0):
+                        for boost in (0.0, 1.0):
+                            if (
+                                jump == 1.0 and yaw != 0.0
+                            ):  # Only need roll for sideflip
                                 continue
-                            if pitch == roll == jump == 0:  # Duplicate with ground
+                            if pitch == roll == jump == 0.0:  # Duplicate with ground
                                 continue
                             # Enable handbrake for potential wavedashes
-                            handbrake = jump == 1 and (
-                                pitch != 0 or yaw != 0 or roll != 0
+                            handbrake = jump == 1.0 and (
+                                pitch != 0.0 or yaw != 0.0 or roll != 0.0
                             )
                             actions.append(
-                                [boost, yaw, pitch, yaw, roll, jump, boost, handbrake]
+                                [
+                                    float(boost),
+                                    float(yaw),
+                                    float(pitch),
+                                    float(yaw),
+                                    float(roll),
+                                    float(jump),
+                                    float(boost),
+                                    float(handbrake),
+                                ]
                             )
         actions_np = np.array(actions)
         return actions_np

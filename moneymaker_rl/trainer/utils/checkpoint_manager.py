@@ -1,7 +1,6 @@
-# Standard Library
 import os
+from typing import Optional
 
-# Third Party
 import torch
 
 
@@ -10,8 +9,10 @@ class CheckpointManager:
         self.directory = directory
         self.max_checkpoints = max_checkpoints
         self.best_accuracy = 0.0
-        self.best_epoch = None
-        self.checkpoints = []  # List to keep track of checkpoints
+        self.best_epoch: Optional[int] = None
+        self.checkpoints: list[tuple[str, float]] = (
+            []
+        )  # List to keep track of checkpoints
 
         if not os.path.exists(self.directory):
             os.makedirs(self.directory)
@@ -20,7 +21,9 @@ class CheckpointManager:
         best_epoch_string = f"best_model_epoch_{epoch + 1}.pt"
         return os.path.join(self.directory, best_epoch_string)
 
-    def save_checkpoint(self, model, epoch: int, accuracy: float) -> None:
+    def save_checkpoint(
+        self, model: torch.nn.Module, epoch: int, accuracy: float
+    ) -> None:
         checkpoint_path = os.path.join(self.directory, f"epoch_{epoch + 1}.pt")
         torch.save(model.state_dict(), checkpoint_path)
         self.checkpoints.append((checkpoint_path, accuracy))

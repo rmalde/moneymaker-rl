@@ -1,12 +1,9 @@
-# Standard Library
 from typing import Literal
 
-# Third Party
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-# First Party
 from moneymaker_rl.models import AttentionPooling, TransformerBlock
 
 

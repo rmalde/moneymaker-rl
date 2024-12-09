@@ -1,10 +1,9 @@
-# Third Party
 import torch
 import torch.nn as nn
 
 
 class SkillMask(nn.Module):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.in_dim = 111
@@ -43,7 +42,7 @@ class SkillMask(nn.Module):
         )
         self.mask[indices] = True
 
-    def forward(self, x: torch.Tensor):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         # x: (n, 111) -> (n, 18)
         return x[:, self.mask]
 

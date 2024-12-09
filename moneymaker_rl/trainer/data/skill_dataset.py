@@ -1,8 +1,6 @@
-# Standard Library
 import os
 import warnings
 
-# Third Party
 import numpy as np
 import torch
 from torch.utils.data import Dataset
@@ -46,7 +44,9 @@ rank_to_skill = {
 
 
 class SkillDataset(Dataset):
-    def __init__(self, dataset_dir: str, filenames: list[str], filename_to_rank: dict[str, str]) -> None:
+    def __init__(
+        self, dataset_dir: str, filenames: list[str], filename_to_rank: dict[str, str]
+    ) -> None:
         """
         Args:
             dataset_dir (str): Path to the dataset, ie 'dataset/ssl-1v1-100'
@@ -63,7 +63,7 @@ class SkillDataset(Dataset):
         self.obs_size = len(self.data[0][0])
         self.action_size = 90
 
-    def _load_data(self) -> list:
+    def _load_data(self) -> list[tuple[torch.Tensor, torch.Tensor]]:
         data = []
         skipped_ranks = set()
         for filename in tqdm(self.filenames):

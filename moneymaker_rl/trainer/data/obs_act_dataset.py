@@ -1,10 +1,8 @@
-# Standard Library
 import os
 import warnings
 from collections import deque
 from concurrent.futures import ThreadPoolExecutor
 
-# Third Party
 import numpy as np
 import torch
 from torch.utils.data import Dataset
@@ -16,7 +14,9 @@ warnings.filterwarnings("ignore", category=TqdmExperimentalWarning)
 
 
 class ObsActDataset(Dataset):
-    def __init__(self, dataset_dir, filenames, max_cache_size=512) -> None:
+    def __init__(
+        self, dataset_dir: str, filenames: list[str], max_cache_size: int = 512
+    ) -> None:
         """
         Args:
             dataset_dir (str): Path to the dataset, ie 'dataset/ssl-1v1-100'
@@ -63,7 +63,7 @@ class ObsActDataset(Dataset):
 
         return index_map
 
-    def _load_file_into_cache(self, filename) -> None:
+    def _load_file_into_cache(self, filename: str) -> None:
         if filename in self.data_cache:
             return  # Already cached
 

@@ -1,7 +1,5 @@
-# Standard Library
 from typing import List
 
-# Third Party
 from rlgym_tools.replays.convert import ReplayFrame, replay_to_rlgym
 from rlgym_tools.replays.parsed_replay import ParsedReplay
 
@@ -13,10 +11,8 @@ def replay_to_rlgym_frames(replay_file_path: str) -> List[ReplayFrame]:
 
 if __name__ == "__main__":
     # download replay file
-    # Standard Library
     import os
 
-    # Third Party
     from replay_to_action_obs.data import download_replays
 
     replay_dir = "dataset/replays"

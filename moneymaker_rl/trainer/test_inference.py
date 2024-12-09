@@ -1,11 +1,8 @@
-# Standard Library
 import os
 
-# Third Party
 import numpy as np
 import torch
 
-# First Party
 from moneymaker_rl.models import FCN
 
 
@@ -13,7 +10,7 @@ OBS_SIZE = 99
 ACT_SIZE = 90
 
 
-def test_inference(model_path: str, act_path: str, obs_path: str):
+def test_inference(model_path: str, act_path: str, obs_path: str) -> None:
     # Load model
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     sequence_length = 1
